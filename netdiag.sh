@@ -407,22 +407,22 @@ check_l5_wan() {
     header "L5: 互联网连通性"
 
     # ── ping 公网 DNS ──
-    info "正在 ping 114.114.114.114 (20 个包)..."
+    info "正在 ping 223.5.5.5 (20 个包)..."
     local ping_out
-    ping_out=$(ping -c 20 -i 0.3 -W 2000 114.114.114.114 2>&1)
+    ping_out=$(ping -c 20 -i 0.3 -W 2000 223.5.5.5 2>&1)
     local loss_pct
     loss_pct=$(echo "$ping_out" | awk '/packet loss/ {for(i=1;i<=NF;i++) if($i ~ /%/) {gsub(/%/,"",$i); print $i; exit}}')
 
     if [[ -n "$loss_pct" ]]; then
         if gt "$loss_pct" "50"; then
-            fail "公网严重丢包 (114 DNS 丢包 ${loss_pct}%)"
+            fail "公网严重丢包 (223.5.5.5 丢包 ${loss_pct}%)"
         elif gt "$loss_pct" "10"; then
-            warn "公网丢包偏高 (114 DNS 丢包 ${loss_pct}%)"
+            warn "公网丢包偏高 (223.5.5.5 丢包 ${loss_pct}%)"
         else
-            pass "公网连通性良好 (114 DNS 丢包 ${loss_pct}%)"
+            pass "公网连通性良好 (223.5.5.5 丢包 ${loss_pct}%)"
         fi
     else
-        fail "无法 ping 通 114.114.114.114 — 可能无互联网连接"
+        fail "无法 ping 通 223.5.5.5 — 可能无互联网连接"
     fi
 
     # ── HTTPS 连接测试 ──
